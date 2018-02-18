@@ -25,6 +25,27 @@ python2 setup.py install
 pip2 install -U pyobjc
 ```
 
+## How to use
+
+Find your Switch Bot ID.
+
+```
+$ python2 search_switchbot.py
+=== SwitchBot IDs ===
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (None)
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (WoHand)
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (WoHand)
+=====================
+```
+
+Send a message to your ID.
+```
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx press
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx on
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx off
+```
+
+
 ## Special Thanks to
 
 Adafruit_Python_BluefruitLE
