@@ -1,4 +1,4 @@
-# SwitchBot python
+# SwitchBot Python Controller
 This is library to control your Switch Bots with python on mac.
 
 ## Environment
