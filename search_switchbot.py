@@ -40,18 +40,31 @@ def main():
         adapter.start_scan()
         # Search for the first device found (will time out after 60 seconds
         # but you can specify an optional timeout_sec parameter to change it).
-        device = ble.find_device(service_uuids=[SBOT_SERVICE_UUID])
-        if device is None:
-            raise RuntimeError('Failed to find device!')
+
+
+        print('Press Ctl-C to stop...\n')
+
+        known_bots = set()
+        while True:
+            print('Searching...')
+            # Call UART.find_devices to get a list of any UART devices that
+            # have been found.  This call will quickly return results and does
+            # not wait for devices to appear.
+            found = set(ble.find_devices(service_uuids=[SBOT_SERVICE_UUID]))
+            # Check for new devices that haven't been seen yet and print out
+            # their name and ID (MAC address on Linux, GUID on OSX).
+            new = found - known_bots
+            for device in new:
+                print('Found bot: {0} [{1}]'.format(device.name, device.id))
+                known_bots.update(new)
+            # Sleep for a second and see if new devices have appeared.
+            time.sleep(1.0)
+
     finally:
         # Make sure scanning is stopped before exiting.
         adapter.stop_scan()
 
-    devices = ble.find_devices(service_uuids=[SBOT_SERVICE_UUID])
-    print('=== SwitchBot IDs ===')
-    for dev in devices:
-        print(str(dev.id) +' (' + str(dev.name) + ')')
-    print('=====================')
+   
 
 # Initialize the BLE system.  MUST be called before other BLE calls!
 ble.initialize()

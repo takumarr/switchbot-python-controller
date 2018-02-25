@@ -41,27 +41,38 @@ def main():
 
     # Scan for devices.
     print('Searching for device...')
+
+    device = None
+
     try:
         adapter.start_scan()
-        # Search for the first device found (will time out after 60 seconds
-        # but you can specify an optional timeout_sec parameter to change it).
-        d = ble.find_device(service_uuids=[SBOT_SERVICE_UUID])
-        if d is None:
-            raise RuntimeError('Failed to find device!')
+        known_bots = set()
+        count = 10 
+        while count > 0:
+            print('Searching...')
+            found = set(ble.find_devices(service_uuids=[SBOT_SERVICE_UUID]))
+            new = found - known_bots
+            for dev in new:
+                print('Found Bot: {0} [{1}]'.format(dev.name, dev.id))
+                if str(dev.id) == bot_id:
+                   print('\t Found Your Bot: {0} [{1}]'.format(dev.name, dev.id))
+                   device = dev
+                   break
+
+            if not device is None:
+                break
+
+            count = count - 1
+            if count == 0:
+                raise RuntimeError('Failed to find device!')
+
+            time.sleep(1.0)
+
     finally:
-        # Make sure scanning is stopped before exiting.
         adapter.stop_scan()
 
-    devices = ble.find_devices(service_uuids=[SBOT_SERVICE_UUID])
-    #print('devices count=' + str(len(devices)))
-    assert len(devices) > 0, "No device!"
 
-    tmp = filter(lambda n:str(n.id) == bot_id, devices)
-    if len(tmp) == 0:
-        print(bot_id + ' is not found.')
-        return
-
-    device = tmp[0]
+    assert not device is None, "No device!"
 
     print('Connecting to device...')
     device.connect()  # Will time out after 60 seconds, specify timeout_sec parameter
@@ -108,6 +119,7 @@ def main():
         # Now just wait for 30 seconds to receive data.
         print('Waiting a few seconds to receive data from the device...')
         time.sleep(1)
+
     finally:
         # Make sure device is disconnected on exit.
         device.disconnect()
