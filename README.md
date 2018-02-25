@@ -1,4 +1,4 @@
-# SwitchBot python
+# SwitchBot Python Controller
 This is library to control your Switch Bots with python on mac.
 
 ## Environment
@@ -23,6 +23,28 @@ python2 setup.py install
 
 # If you dont have objc library
 pip2 install -U pyobjc
+```
+
+## How to use
+
+Find your Switch Bot ID.
+
+```
+$ python2 search_switchbot.py
+=== SwitchBot IDs ===
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (None)
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (WoHand)
+xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (WoHand)
+=====================
+```
+
+Send a message to your ID.
+```
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx press
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx on
+$ python2 switchbot.py xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx off
+```
+
 
 ## Special Thanks to
 
